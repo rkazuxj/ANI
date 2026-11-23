@@ -37,7 +37,7 @@ O cabo de cobre que atravessa a nossa marca faz referência à topologia em barr
 
 ## Abra o site
 
-Com o repositório no computador, abra `index.html` no navegador. Em **Co-workers → Aura Capital**, você pode percorrer as três etapas, ampliar a topologia e consultar os documentos. O botão **Animações** controla a contagem dos indicadores de rede e dos valores do orçamento.
+Com o repositório no computador, abra `index.html` no navegador. No menu, **Network Map** abre a simulação interativa para explorar a rede pelo celular. Toque em um destino para acompanhar o pacote ou em um equipamento para consultar seus dados. Em **Co-workers → Aura Capital**, você pode percorrer as três etapas, ampliar a topologia e consultar os documentos. O botão **Animações** controla a contagem dos indicadores de rede e dos valores do orçamento.
 
 O site usa HTML, CSS e JavaScript e abre diretamente pelo arquivo.
 
