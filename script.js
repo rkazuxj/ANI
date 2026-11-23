@@ -54,6 +54,19 @@ scheduleHighlight();
 
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 const motionButton = document.querySelector('.motion-control');
+const heroWord = document.querySelector('.hero-word');
+if (heroWord) {
+  const letters = Array.from(heroWord.textContent, (character, index) => {
+    const letter = document.createElement('span');
+    letter.textContent = character;
+    letter.style.setProperty('--letter', index);
+    return letter;
+  });
+  heroWord.replaceChildren(...letters);
+}
+document.querySelectorAll('.people li').forEach((member, index) => {
+  member.style.setProperty('--member', index);
+});
 const counters = new Map([...document.querySelectorAll('[data-counter]')].map(node => [node, node.textContent.trim()]));
 const reais = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 const frames = new Map();
@@ -111,7 +124,7 @@ function syncMotion() {
     }
   }, { threshold: 0.12 });
 
-  document.querySelectorAll('[data-counter], .service-card, .client-diagram, .contact-grid')
+  document.querySelectorAll('[data-counter], .service-card, .client-diagram, .contact-grid, .people li')
     .forEach(element => motionObserver.observe(element));
 }
 

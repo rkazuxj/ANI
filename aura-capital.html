@@ -36,21 +36,63 @@
   </header>
   <main id="conteudo">
     <section class="case-hero" id="caso">
-      <div class="wrap">
-        <div class="eyebrow">
-          <i></i>Co-workers / Estudo de caso
+      <div class="wrap case-hero-layout">
+        <div>
+          <div class="eyebrow">
+            <i></i>Co-workers / Estudo de caso
+          </div>
+          <h1>
+            Aura <em>Capital.</em>
+          </h1>
+          <p>
+            Como interligar duas unidades de uma fintech para que a equipe de atendimento acesse os sistemas da matriz?
+          </p>
+          <div class="chips">
+            <span class="chip">Serviços financeiros</span><span class="chip">Matriz + filial</span><span
+              class="chip">Enterprise Connect</span>
+          </div>
+          <button class="motion-control" type="button" aria-pressed="false" hidden>Animações <span aria-hidden="true"></span></button>
         </div>
-        <h1>
-          Aura <em>Capital.</em>
-        </h1>
-        <p>
-          Como interligar duas unidades de uma fintech para que a equipe de atendimento acesse os sistemas da matriz?
-        </p>
-        <div class="chips">
-          <span class="chip">Serviços financeiros</span><span class="chip">Matriz + filial</span><span
-            class="chip">Enterprise Connect</span>
-        </div>
-        <button class="motion-control" type="button" aria-pressed="false" hidden>Animações <span aria-hidden="true"></span></button>
+        <figure class="case-network">
+          <figcaption>Da filial à aplicação da matriz</figcaption>
+          <svg viewBox="0 0 460 240" role="img" aria-labelledby="case-network-title">
+            <title id="case-network-title">Um terminal de atendimento da filial se conecta pela WAN ao servidor da aplicação na matriz. O enlace usa a sub-rede 10.6.0.216/30.</title>
+            <defs>
+              <pattern id="network-grid" width="22" height="22" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="1" fill="#486267"/>
+              </pattern>
+              <path id="network-cable" d="M107 132h45l28 24h70l47-37h38"/>
+            </defs>
+            <rect width="460" height="240" fill="url(#network-grid)"/>
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <use href="#network-cable" stroke="#eb935f" stroke-width="3"/>
+              <use class="case-network-packet" href="#network-cable" stroke="#fff4d9" stroke-width="4"/>
+              <g stroke="#a4bfba" stroke-width="2">
+                <path fill="#25464a" d="m52 83 12-6 66 10v47l-12 6-66-11z"/>
+                <path fill="#162f34" d="m52 83 66 11v46l-66-11z"/>
+                <path stroke="#75aaa3" d="m60 93 50 8v26l-50-8z"/>
+                <path d="m78 134-1 10-12 5 31 5 8-5-18-3 1-10"/>
+                <path stroke="#eb935f" d="m68 104 5 5-5 3m10 2 11 2"/>
+              </g>
+              <g stroke="#a4bfba" stroke-width="2">
+                <path fill="#294b50" d="m318 72 39-18 57 9-38 19z"/>
+                <path fill="#203e43" d="m318 72 58 10v83l-58-11z"/>
+                <path fill="#162f34" d="m376 82 38-19v82l-38 20z"/>
+                <path d="m318 99 58 10 38-19m-96 36 58 10 38-19"/>
+                <path stroke="#eb935f" stroke-width="3" d="m328 87 11 2m-11 26 11 2m-11 25 11 2"/>
+                <path d="m355 92 8 1m-8 26 8 1m-8 26 8 1"/>
+              </g>
+            </g>
+            <g text-anchor="middle" class="network-labels">
+              <text x="88" y="187">Filial</text>
+              <text x="363" y="187">Matriz</text>
+              <text class="network-detail" x="88" y="209">Atendimento</text>
+              <text class="network-detail" x="363" y="209">Aplicação</text>
+              <text class="network-wan" x="216" y="114">WAN</text>
+              <text class="network-detail" x="216" y="136">10.6.0.216/30</text>
+            </g>
+          </svg>
+        </figure>
       </div>
     </section>
     <div class="wrap case-layout">
