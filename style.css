@@ -872,7 +872,7 @@ footer {
   color: #733716;
 }
 
-.metrics span {
+.metrics > div > span {
   display: block;
   margin-top: .35rem;
   line-height: 1.4;
@@ -1228,7 +1228,7 @@ tbody tr:last-child>* {
     border-bottom: 1px solid var(--line);
   }
 
-  .metrics span {
+  .metrics > div > span {
     margin: 0;
     text-align: right;
   }
@@ -1238,20 +1238,6 @@ tbody tr:last-child>* {
   html {
     scroll-behavior: auto;
   }
-}
-
-.contact-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.contact-page main {
-  flex: 1;
-}
-
-.contact-page h1 {
-  margin: 0 0 clamp(26px, 3vw, 48px);
 }
 
 .contact-grid {
@@ -1271,7 +1257,7 @@ tbody tr:last-child>* {
   height: 34px;
 }
 
-.contact-grid h2 {
+.contact-grid h3 {
   font-size: clamp(1.7rem, 3vw, 3rem);
   margin: 24px 0 12px;
 }
@@ -1315,33 +1301,68 @@ tbody tr:last-child>* {
   font-variant-numeric: tabular-nums;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .main-header nav a::after {
-    transition: transform .2s ease-out;
-  }
+.motion-control {
+  margin-top: 16px;
+  padding: 5px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font: .8rem var(--technical);
+  cursor: pointer;
+}
 
-  .hero-copy, .case-hero h1, .contact-page h1, .hero-figure, .contact-grid {
-    animation: enter-view .55s ease-out backwards;
-  }
+.motion-control span {
+  display: inline-block;
+  width: 28px;
+  height: 16px;
+  background: #626e6c;
+  border-radius: 10px;
+  position: relative;
+}
 
-  .hero-figure, .contact-grid {
-    animation-delay: .1s;
-  }
+.motion-control span::before {
+  content: '';
+  position: absolute;
+  inset: 3px auto 3px 3px;
+  width: 10px;
+  border-radius: 50%;
+  background: white;
+}
 
-  .client-diagram.signal-active .map-pair i::after {
-    content: '';
-    position: absolute;
-    top: -4px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--copper);
-    animation: send-packet 1.6s ease-in-out 2 both;
-  }
+.motion-control[aria-pressed="true"] span { background: var(--copper); }
+.motion-control[aria-pressed="true"] span::before { transform: translateX(12px); }
+
+html.motion-off { scroll-behavior: auto; }
+
+.motion-on .main-header nav a::after { transition: transform .32s ease-out; }
+
+.motion-on .hero-copy, .motion-on .case-hero h1, .motion-on .hero-figure,
+.motion-on .in-view {
+  animation: enter-view .85s ease-out backwards;
+}
+
+.motion-on .hero-figure { animation-delay: .12s; }
+.motion-on .hero-figure img { transition: transform .45s ease-out; }
+@media (hover: hover) {
+  .motion-on .hero-figure:hover img { transform: translateY(-8px); }
+}
+
+.motion-on .client-diagram.in-view .map-pair i::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--copper);
+  animation: send-packet 1.8s ease-in-out 2 both;
 }
 
 @keyframes enter-view {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(22px); }
   to { opacity: 1; transform: translateY(0); }
 }
 

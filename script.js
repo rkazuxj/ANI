@@ -53,35 +53,72 @@ window.addEventListener('pageshow', scheduleHighlight);
 scheduleHighlight();
 
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionButton = document.querySelector('.motion-control');
+const counters = new Map([...document.querySelectorAll('[data-counter]')].map(node => [node, node.textContent.trim()]));
+const reais = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const frames = new Map();
+let motionObserver;
+let selectedMotion;
+try {
+  selectedMotion = sessionStorage.getItem('ani-motion');
+} catch { /* A página também funciona quando o armazenamento está bloqueado. */ }
 
 function animateCounter(counter) {
-  const label = counter.textContent.trim();
-  const target = Number(label);
+  const label = counters.get(counter);
+  const isCurrency = counter.dataset.counter === 'brl';
+  // Em reais, a contagem usa centavos inteiros.
+  const target = Number(isCurrency ? label.replace(/\D/g, '') : label);
+  const minDigits = label.startsWith('0') ? label.length : 1;
   const start = performance.now();
 
   function update(now) {
-    const progress = Math.min((now - start) / 950, 1);
-    if (progress >= 1 || motionPreference.matches) {
+    const progress = Math.max(0, Math.min((now - start) / 1800, 1));
+    if (progress >= 1) {
       counter.textContent = label;
+      frames.delete(counter);
       return;
     }
     const value = Math.floor(target * (1 - (1 - progress) ** 2));
-    counter.textContent = String(value).padStart(label.length, '0');
-    requestAnimationFrame(update);
+    counter.textContent = isCurrency ? reais.format(value / 100) : String(value).padStart(minDigits, '0');
+    frames.set(counter, requestAnimationFrame(update));
   }
   update(start);
 }
 
-if ('IntersectionObserver' in window && !motionPreference.matches) {
-  const observer = new IntersectionObserver(entries => {
+function syncMotion() {
+  const enabled = selectedMotion ? selectedMotion === 'on' : !motionPreference.matches;
+  const root = document.documentElement;
+  root.classList.toggle('motion-on', enabled);
+  root.classList.toggle('motion-off', !enabled);
+  if (motionButton) {
+    motionButton.hidden = false;
+    motionButton.setAttribute('aria-pressed', String(enabled));
+  }
+  motionObserver?.disconnect();
+  for (const frame of frames.values()) cancelAnimationFrame(frame);
+  frames.clear();
+  for (const [counter, label] of counters) counter.textContent = label;
+  document.querySelectorAll('.in-view').forEach(node => node.classList.remove('in-view'));
+  if (!enabled || !('IntersectionObserver' in window)) return;
+
+  motionObserver = new IntersectionObserver((entries, observer) => {
+    if (observer !== motionObserver || !root.classList.contains('motion-on')) return;
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       observer.unobserve(entry.target);
-      if (motionPreference.matches) continue;
-      if (entry.target.matches('[data-counter]')) animateCounter(entry.target);
-      else entry.target.classList.add('signal-active');
+      if (counters.has(entry.target)) animateCounter(entry.target);
+      else entry.target.classList.add('in-view');
     }
-  }, { threshold: 0.25 });
+  }, { threshold: 0.12 });
 
-  document.querySelectorAll('[data-counter], .client-diagram').forEach(element => observer.observe(element));
+  document.querySelectorAll('[data-counter], .service-card, .client-diagram, .contact-grid')
+    .forEach(element => motionObserver.observe(element));
 }
+
+motionButton?.addEventListener('click', () => {
+  selectedMotion = motionButton.getAttribute('aria-pressed') === 'true' ? 'off' : 'on';
+  try { sessionStorage.setItem('ani-motion', selectedMotion); } catch { /* Preferência válida nesta página. */ }
+  syncMotion();
+});
+motionPreference.addEventListener('change', () => { if (!selectedMotion) syncMotion(); });
+syncMotion();
