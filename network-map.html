@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#11333a">
+<meta name="theme-color" content="#101317">
 <title>Network Map · Aura Capital | ANI</title>
 <link rel="icon" href="assets/logo_ani.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#102f36;--panel:#183e44;--panel2:#20484e;--line:#436066;--tx:#faf7ef;--mu:#bfcecb;--cu:#efa267;--cu2:#ffb985;
+:root{--bg:#0c0e11;--panel:#171b20;--panel2:#22282e;--line:#3b434a;--tx:#f1eee7;--mu:#b2b8ba;--cu:#efa267;--cu2:#ffb985;
 --v10:#8b7cf6;--v20:#2bb38a;--v30:#4c9eeb;--v40:#e8a33d;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Space Grotesk',system-ui,sans-serif;overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
@@ -49,54 +49,72 @@ h1 em{font-style:normal;color:var(--cu2)}
 /* map */
 #map {
   display: grid;
-  grid-template: "mast mast" auto "stage panel" minmax(0,1fr) / minmax(0,1fr) clamp(300px,30vw,445px);
+  grid-template: "mast" auto "stage" minmax(0,1fr) / 100%;
   background: var(--bg);
 }
 .mast {
   grid-area: mast; display:flex; align-items:center; gap:18px;
   padding:calc(var(--st) + 10px) clamp(14px,2.6vw,40px) 10px;
-  background:#f6f4eb; color:#12343a; border-bottom:3px solid #bf582a;
+  background:#111418; color:var(--tx); border-bottom:1px solid var(--line);
 }
-.mast img { display:block; width:78px; mix-blend-mode:multiply; }
+.mast .site-back img { display:block; width:64px; background:#ebece5; padding:3px; border-radius:3px; }
 .mast .site-back { flex:none; }
-.map-title { border-left:1px solid #aab5ac; padding-left:18px; }
-.map-title strong { display:block; font-size:clamp(17px,2vw,24px); line-height:1.08; letter-spacing:-.035em; }
+.map-title { border-left:1px solid #42484b; padding-left:18px; }
+.map-title .aura-logo { display:block; width:132px; height:auto; padding:3px 6px; border-radius:3px; background:#f4f1fa; }
 .map-title small, .origin-label, .route-label { font:600 10px/1.5 'JetBrains Mono',monospace; letter-spacing:.09em; text-transform:uppercase; }
-.map-title small { color:#8d431f; }
+.map-title small { color:var(--cu2); }
 .stage {
   grid-area:stage; position:relative; min-height:0; overflow:hidden;
-  background-color:#103239;
-  background-image:radial-gradient(circle,#466064 1px,transparent 1.25px);
+  background-color:#0d1014;
+  background-image:radial-gradient(circle,#293139 1px,transparent 1.25px);
   background-size:22px 22px;
 }
 #svg { width:100%;height:100%;touch-action:none;display:block; }
 #hud { position:absolute; top:10px;right:12px;display:flex;gap:5px; }
-.ib { width:44px;height:44px;display:grid;place-items:center;background:#112e34;border:1px solid #658083;border-radius:5px; }
+.ib { width:44px;height:44px;display:grid;place-items:center;background:#1a2026;border:1px solid var(--line);border-radius:5px; }
 .ib svg { width:21px;height:21px;stroke:var(--tx);fill:none;stroke-width:1.8; }
-#me { margin-left:auto;display:flex;align-items:center;gap:10px;padding:5px 10px;background:#e6e9df;color:#19363b;border:1px solid #bbc7bc;border-radius:4px;min-width:0;text-align:left; }
+#me { margin-left:auto;display:flex;align-items:center;gap:10px;padding:5px 10px;background:#1a2026;color:var(--tx);border:1px solid var(--line);border-radius:4px;min-width:0;text-align:left; }
 #me .dot { width:10px;height:10px;flex:none;border:1px solid #233e44; }
 #me .origin-text { display:grid;min-width:0; }
 #meTxt { overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px; }
-#sheet {
-  --tx:#183238;--mu:#485e5d;--panel2:#e8ece2;--line:#c2ccc1;
-  grid-area:panel; min-height:0; overflow-y:auto; overscroll-behavior:contain;
-  padding:clamp(20px,2.6vw,40px); padding-bottom:calc(var(--sb) + 20px);
-  background:#f6f4eb; color:var(--tx); border-left:1px solid #526b6c;
+#packetPanel {
+  position:absolute;z-index:2;right:10px;bottom:max(10px,var(--sb));
+  max-width:calc(100% - 20px);max-height:calc(100% - 20px);
+  display:flex;flex-direction:column;overflow:hidden;background:var(--panel);
+  border:1px solid #4a5258;border-radius:9px;box-shadow:0 6px 22px #0007;
 }
-.route-label { display:flex;align-items:center;gap:8px;color:#95451f;margin-bottom:8px; }
-.route-label::before { content:"";width:18px;height:3px;background:currentColor; }
-.sh-t { font-size:clamp(21px,2.3vw,34px);line-height:1.12;letter-spacing:-.045em;font-weight:600;margin-bottom:9px; }
+#sheet {
+  width:310px;max-width:100%;min-height:0;max-height:min(38dvh,350px);
+  padding:10px 12px;overflow:auto;overscroll-behavior:contain;border-top:1px solid var(--line);
+}
+.panel-bar { display:flex;align-items:center;flex:none; }
+#panelToggle {
+  flex:1;min-height:44px;display:flex;align-items:center;justify-content:space-between;
+  gap:10px;padding:0 12px 0 4px;font-size:13px;font-weight:600;
+}
+#panelToggle svg { width:15px;height:15px;color:var(--cu2); }
+#panelToggle[aria-expanded="false"] svg { transform:rotate(180deg); }
+#panelGrip {
+  width:44px;height:44px;display:grid;place-items:center;cursor:grab;
+  touch-action:none;color:var(--mu);
+}
+#panelGrip:active { cursor:grabbing; }
+#panelGrip::before {
+  content:"";width:12px;height:16px;
+  background:radial-gradient(circle,var(--mu) 1.3px,transparent 1.6px) 0 0 / 5px 5px;
+}
+.sh-t { font-size:21px;line-height:1.12;letter-spacing:-.045em;font-weight:600;margin-bottom:9px; }
 .sh-s { color:var(--mu);font-size:14px;line-height:1.5;margin-bottom:16px; }
 .dests { display:grid;border-top:1px solid var(--line); }
-.dest { display:grid;grid-template-columns:12px 1fr auto;gap:12px;align-items:center;text-align:left;padding:16px 4px;border-bottom:1px solid var(--line); }
-.dest:hover,.dest:focus-visible { background:#e6ebdf; }
+.dest { display:grid;grid-template-columns:12px 1fr auto;gap:12px;align-items:center;text-align:left;padding:9px 4px;border-bottom:1px solid var(--line); }
+.dest:hover,.dest:focus-visible { background:var(--panel2); }
 .dest .socket { width:10px;height:10px;border:1px solid #233e4480; }
 .dest strong { display:block;font-size:17px;letter-spacing:-.025em; }
 .dest .m { font-size:12px;color:var(--mu); }
-.dest .arrow { font-size:22px;color:#9b491f; }
+.dest .arrow { font-size:22px;color:var(--cu2); }
 .hop-readout {
   position:absolute; left:12px; top:12px; max-width:calc(100% - 124px);
-  padding:7px 10px; background:#12343af0; border-left:3px solid #efa267;
+  padding:7px 10px; background:#171b20f2; border-left:3px solid #efa267;
   color:#ffddb7; font:500 12px/1.45 'JetBrains Mono',monospace;
   pointer-events:none; overflow-wrap:anywhere;
 }
@@ -104,9 +122,9 @@ h1 em{font-style:normal;color:var(--cu2)}
 .current-link { stroke:#ffd6a1; stroke-width:5; filter:drop-shadow(0 0 3px #eea364); }
 .btn,.btn.ghost,.tag,.hdr div,.stats div { border-radius:4px; }
 .btn.ghost { color:var(--tx); }
-#sheet .ctl { position:sticky;bottom:0;padding-top:6px;background:#f6f4eb; }
+#sheet .ctl { position:sticky;bottom:0;padding-top:6px;background:var(--panel); }
 #sheet .ctl .btn { padding-inline:6px; }
-.tag.delivered { background:#d7eadb;color:#205238; }
+.tag.delivered { background:#1a352e;color:#a9eac2; }
 .tag{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--panel2);color:var(--mu);margin-bottom:8px}
 .hdr{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0 12px}
 .hdr div{background:var(--panel2);border-radius:10px;padding:7px 10px;min-width:0}
@@ -152,30 +170,23 @@ h1 em{font-style:normal;color:var(--cu2)}
 #intro .brand { flex-wrap: wrap; }
 .site-back { color: var(--tx); text-decoration: none; }
 #map :focus-visible, #intro :focus-visible { outline: 2px solid var(--cu2); outline-offset: 2px; }
-#intro { background-color:#12343a;align-items:center;justify-content:safe center; }
+#intro { background-color:var(--bg);align-items:center;justify-content:safe center; }
 #intro > div { width:min(100%,540px); }
 #intro .brand img { width:62px;display:block; }
 #intro .brand a { background:#f6f4eb;padding:6px;border-radius:3px; }
 @media (max-width:759px) {
-  #map { grid-template:"mast" auto "stage" minmax(0,1fr) "panel" auto / 100%; }
   .mast { gap:10px;padding-inline:10px; }
-  .mast img { width:48px; }
+  .mast .site-back img { width:48px; }
+  .map-title .aura-logo { width:104px; }
   .map-title { padding-left:10px; }
   #me { gap:6px;padding:4px 7px; }
   #meTxt { max-width:24vw;font-size:11px; }
-  #sheet { max-height:48dvh;max-height:min(48dvh,440px);padding:14px 16px calc(12px + var(--sb));border-left:0;border-top:3px solid #ce8050; }
   .dests { grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px; }
   .dest { grid-template-columns:8px minmax(0,1fr);gap:6px;padding:8px 0; }
   .dest strong { font-size:14px; }
   .dest .m { font-size:10px; }
   .dest .arrow { display:none; }
-  .route-label { margin-bottom:4px; }
   .sh-s { margin-bottom:8px; }
-}
-@media (max-height:490px) and (orientation:landscape) {
-  #map { grid-template:"mast mast" auto "stage panel" minmax(0,1fr) / minmax(0,1fr) minmax(235px,38%); }
-  #sheet { max-height:none;border-top:0;padding:12px 16px; }
-  .dests { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -202,7 +213,7 @@ h1 em{font-style:normal;color:var(--cu2)}
 <section id="map" class="scr hide">
   <header class="mast">
     <a class="site-back" href="index.html#home" aria-label="Voltar ao site da ANI"><img src="assets/ani.webp" alt="ANI"></a>
-    <div class="map-title"><small lang="en">Network Map</small><strong>Aura Capital</strong></div>
+    <div class="map-title"><small lang="en">Network Map</small><img class="aura-logo" src="assets/auralogo.svg" width="184" height="50" alt="Aura Capital"></div>
     <button id="me" title="Ver meu dispositivo"><span class="dot" id="meDot"></span><span class="origin-text"><span class="origin-label">Meu dispositivo</span><span class="mono" id="meTxt"></span></span></button>
   </header>
   <div class="stage">
@@ -213,8 +224,17 @@ h1 em{font-style:normal;color:var(--cu2)}
   </div>
     <div class="hop-readout" id="hopReadout"></div>
     <div id="toast" role="status"></div>
+    <aside id="packetPanel" aria-label="Painel da simulação">
+      <div class="panel-bar">
+        <button id="panelGrip" type="button" aria-label="Mover painel com as setas" title="Arraste ou use as setas do teclado"></button>
+        <button id="panelToggle" type="button" aria-controls="sheet" aria-expanded="false">
+          <span id="panelToggleText">Mandar um pacote</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 6 5 5 5-5"/></svg>
+        </button>
+      </div>
+      <div id="sheet" hidden></div>
+    </aside>
   </div>
-  <div id="sheet"></div>
 </section>
 
 <script>
@@ -320,13 +340,13 @@ function build(){
  svg.innerHTML='';world=el('g',{},svg);
  const gFloor=el('g',{class:'fade'},world);
  [[0,0,12.2,9.6,'MATRIZ','44 funcionários · link 200 Mb/s'],[13,11,6.2,8.4,'FILIAL','18 funcionários · link 100 Mb/s']].forEach(f=>{
-  const [x,y,w,d]=f;box(gFloor,x,y,-.55,w,d,.55,'#285058','floor');
-  for(let i=1;i<w;i++)el('line',{x1:P(x+i,y)[0],y1:P(x+i,y)[1],x2:P(x+i,y+d)[0],y2:P(x+i,y+d)[1],stroke:'#395e65','stroke-width':1},gFloor);
-  for(let j=1;j<d;j++)el('line',{x1:P(x,y+j)[0],y1:P(x,y+j)[1],x2:P(x+w,y+j)[0],y2:P(x+w,y+j)[1],stroke:'#395e65','stroke-width':1},gFloor);
+  const [x,y,w,d]=f;box(gFloor,x,y,-.55,w,d,.55,'#222931','floor');
+  for(let i=1;i<w;i++)el('line',{x1:P(x+i,y)[0],y1:P(x+i,y)[1],x2:P(x+i,y+d)[0],y2:P(x+i,y+d)[1],stroke:'#303a42','stroke-width':1},gFloor);
+  for(let j=1;j<d;j++)el('line',{x1:P(x,y+j)[0],y1:P(x,y+j)[1],x2:P(x+w,y+j)[0],y2:P(x+w,y+j)[1],stroke:'#303a42','stroke-width':1},gFloor);
   el('polyline',{points:pts([[x,y+d,0],[x+w,y+d,0],[x+w,y,0]]),fill:'none',stroke:COPPER,'stroke-width':1.5,opacity:.55},gFloor);
   const lp=P(x+.3,y+d+.9);
   const place=el('g',{transform:'translate('+lp[0]+' '+lp[1]+')'},gFloor);
-  el('rect',{x:-263,y:-18,width:256,height:75,rx:3,fill:'#13383e',stroke:'#638083'},place);
+  el('rect',{x:-263,y:-18,width:256,height:75,rx:3,fill:'#171c22',stroke:'#55616a'},place);
   el('rect',{x:-263,y:-18,width:5,height:75,fill:f[4]==='MATRIZ'?'#e69a61':'#77c7bb'},place);
   text(place,-244,15,29,f[4],{'text-anchor':'start',fill:'#fff3de','font-weight':600,'letter-spacing':'2'});
   text(place,-244,41,15,f[5],{'text-anchor':'start'});});
@@ -411,17 +431,65 @@ new ResizeObserver(()=>{if(!built)return;if(mode==='home'&&!running)fitAll(200);
 /* ---------- painel ---------- */
 let mode='home',selG=null;
 const sheet=$('#sheet');
-function setSheet(h){sheet.innerHTML=h;sheet.scrollTop=0}
+const panelToggle=$('#panelToggle');
+const panelTitles={home:'Mandar um pacote',dev:'Ver equipamento',trace:'Ver envio',done:'Ver resultado'};
+function updatePanelLabel(){
+ $('#panelToggleText').textContent=sheet.hidden ? panelTitles[mode] : 'Recolher painel';
+}
+function setPanelOpen(open){
+ sheet.hidden=!open;
+ panelToggle.setAttribute('aria-expanded',String(open));
+ updatePanelLabel();
+}
+panelToggle.addEventListener('click',()=>setPanelOpen(sheet.hidden));
+setPanelOpen(false);
+
+const panel=$('#packetPanel');
+const grip=$('#panelGrip');
+const stage=panel.parentElement;
+let position=null;
+let drag=null;
+
+function placePanel(x,y){
+  if(!stage.clientWidth || !stage.clientHeight)return;
+  const margin=8;
+  const left=Math.max(margin,Math.min(x,stage.clientWidth-panel.offsetWidth-margin));
+  const top=Math.max(margin,Math.min(y,stage.clientHeight-panel.offsetHeight-margin));
+  Object.assign(panel.style,{left:left+'px',top:top+'px',right:'auto',bottom:'auto'});
+  position={left,top};
+}
+grip.addEventListener('pointerdown',event=>{
+  if(!event.isPrimary || event.button!==0)return;
+  drag={id:event.pointerId,x:event.clientX,y:event.clientY,left:panel.offsetLeft,top:panel.offsetTop};
+  grip.setPointerCapture(event.pointerId);
+});
+grip.addEventListener('pointermove',event=>{
+  if(drag?.id!==event.pointerId)return;
+  placePanel(drag.left+event.clientX-drag.x,drag.top+event.clientY-drag.y);
+});
+grip.addEventListener('lostpointercapture',()=>{drag=null});
+grip.addEventListener('keydown',event=>{
+  const offset={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20]}[event.key];
+  if(!offset)return;
+  event.preventDefault();
+  placePanel(panel.offsetLeft+offset[0],panel.offsetTop+offset[1]);
+});
+const panelResize=new ResizeObserver(()=>{
+  if(position)placePanel(position.left,position.top);
+});
+panelResize.observe(stage);
+panelResize.observe(panel);
+function setSheet(h){sheet.innerHTML=h;sheet.scrollTop=0;updatePanelLabel()}
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2200)}
 function sel(o){if(selG)selG.classList.remove('sel');selG=o?o.g:null;if(selG)selG.classList.add('sel')}
 function destList(){const out=[{o:byId.srv,n:'Servidor',m:'10.6.0.130 · VLAN 30',c:VL[30].c}];
  [10,20,40].forEach(v=>{const p=PCS.find(q=>q.vlan===v&&q!==me);out.push({o:p,n:VL[v].n,m:p.ip+' · VLAN '+v,c:VL[v].c})});return out}
 function home(){mode='home';sel(null);
  const ds=destList();
- setSheet('<div class="route-label">Envio de pacote</div><div class="sh-t">Escolha o destino.</div><div class="sh-s">Toque em um destino para seguir o pacote ou em um equipamento para ver seus dados.</div><div class="dests">'+
+ setSheet('<div class="sh-t">Escolha o destino.</div><div class="sh-s">Toque em um destino para seguir o pacote ou em um equipamento para ver seus dados.</div><div class="dests">'+
   ds.map((d,i)=>'<button class="dest" data-i="'+i+'"><i class="socket" aria-hidden="true" style="background:'+d.c+'"></i><span><strong>'+d.n+'</strong><span class="m mono">'+d.m+'</span></span><span class="arrow" aria-hidden="true">↗</span></button>').join('')+'</div>');
  sheet.querySelectorAll('.dest').forEach(b=>b.addEventListener('click',()=>trace(ds[+b.dataset.i].o)))}
-function showDev(o){mode='dev';sel(o);focusDev(o,.32,700);let rows=[],extra='';
+function showDev(o){mode='dev';setPanelOpen(true);sel(o);focusDev(o,.32,700);let rows=[],extra='';
  if(o.kind==='router'){rows=Object.entries(o.ifs).map(([k,v])=>[k==='wan'?'WAN':'Gateway VLAN '+k,v]);rows.push(['Modelo',o.model],['Simulação',o.sim],['Preço cotado',o.price]);
   extra=o.id==='r1'?'Roteamento entre VLANs por subinterfaces (router-on-a-stick). Rota estática para a filial: 10.6.0.96/27 via 10.6.0.218.':'Rota estática para a matriz via 10.6.0.217. Na implantação real, a WAN vira um túnel VPN IPsec.'}
  else if(o.kind==='switch'){rows=[['Modelo',o.model],['Simulação',o.sim],['Preço cotado',o.price]];extra=o.role}
