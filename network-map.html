@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0c0e11">
+<meta name="theme-color" content="#11333a">
 <title>Network Map · Aura Capital | ANI</title>
 <link rel="icon" href="assets/logo_ani.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0c0e11;--panel:#14171c;--panel2:#1b1f25;--line:#272b33;--tx:#ece8e1;--mu:#9a968d;--cu:#d27b3c;--cu2:#f2a66a;
+:root{--bg:#102f36;--panel:#183e44;--panel2:#20484e;--line:#436066;--tx:#faf7ef;--mu:#bfcecb;--cu:#efa267;--cu2:#ffb985;
 --v10:#8b7cf6;--v20:#2bb38a;--v30:#4c9eeb;--v40:#e8a33d;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Space Grotesk',system-ui,sans-serif;overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
@@ -47,25 +47,66 @@ h1 em{font-style:normal;color:var(--cu2)}
 .kv div span{display:block;font-size:11px;color:var(--mu);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
 .kv div b{font-weight:500;font-size:14px}
 /* map */
-#map{background:radial-gradient(120% 80% at 50% 30%,#141820 0%,var(--bg) 70%)}
-#svg{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
-#hud{position:absolute;left:0;right:0;top:0;padding:calc(var(--st) + 10px) 12px 0;display:flex;gap:8px;align-items:center;pointer-events:none}
-#hud>*{pointer-events:auto}
-#me{display:flex;align-items:center;gap:9px;background:rgba(20,23,28,.92);border:1px solid var(--line);border-radius:999px;padding:8px 14px 8px 10px;font-size:13px;min-width:0;flex:1}
-#me .dot{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:0 0 0 4px rgba(255,255,255,.06)}
-#me .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ib{width:42px;height:42px;border-radius:50%;background:rgba(20,23,28,.92);border:1px solid var(--line);display:grid;place-items:center;flex:none}
-.ib svg{width:20px;height:20px;stroke:var(--tx);fill:none;stroke-width:1.8}
-#sheet{position:absolute;left:0;right:0;bottom:0;background:rgba(18,21,26,.97);border-top:1px solid var(--line);border-radius:22px 22px 0 0;padding:10px 16px calc(var(--sb) + 16px);max-height:62%;overflow-y:auto;transition:transform .35s cubic-bezier(.2,.9,.3,1)}
-#sheet:before{content:'';display:block;width:38px;height:4px;border-radius:4px;background:var(--line);margin:0 auto 12px}
-.sh-t{font-size:19px;font-weight:600;margin-bottom:4px}
-.sh-s{color:var(--mu);font-size:14px;line-height:1.5;margin-bottom:12px}
-.dests{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.dest{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:3px;transition:transform .12s,border-color .2s}
-.dest:active{transform:scale(.97)}
-.dest .n{font-weight:500;font-size:15px;display:flex;align-items:center;gap:7px}
-.dest .n i{width:9px;height:9px;border-radius:50%;display:inline-block}
-.dest .m{font-size:12px;color:var(--mu)}
+#map {
+  display: grid;
+  grid-template: "mast mast" auto "stage panel" minmax(0,1fr) / minmax(0,1fr) clamp(300px,30vw,445px);
+  background: var(--bg);
+}
+.mast {
+  grid-area: mast; display:flex; align-items:center; gap:18px;
+  padding:calc(var(--st) + 10px) clamp(14px,2.6vw,40px) 10px;
+  background:#f6f4eb; color:#12343a; border-bottom:3px solid #bf582a;
+}
+.mast img { display:block; width:78px; mix-blend-mode:multiply; }
+.mast .site-back { flex:none; }
+.map-title { border-left:1px solid #aab5ac; padding-left:18px; }
+.map-title strong { display:block; font-size:clamp(17px,2vw,24px); line-height:1.08; letter-spacing:-.035em; }
+.map-title small, .origin-label, .route-label { font:600 10px/1.5 'JetBrains Mono',monospace; letter-spacing:.09em; text-transform:uppercase; }
+.map-title small { color:#8d431f; }
+.stage {
+  grid-area:stage; position:relative; min-height:0; overflow:hidden;
+  background-color:#103239;
+  background-image:radial-gradient(circle,#466064 1px,transparent 1.25px);
+  background-size:22px 22px;
+}
+#svg { width:100%;height:100%;touch-action:none;display:block; }
+#hud { position:absolute; top:10px;right:12px;display:flex;gap:5px; }
+.ib { width:44px;height:44px;display:grid;place-items:center;background:#112e34;border:1px solid #658083;border-radius:5px; }
+.ib svg { width:21px;height:21px;stroke:var(--tx);fill:none;stroke-width:1.8; }
+#me { margin-left:auto;display:flex;align-items:center;gap:10px;padding:5px 10px;background:#e6e9df;color:#19363b;border:1px solid #bbc7bc;border-radius:4px;min-width:0;text-align:left; }
+#me .dot { width:10px;height:10px;flex:none;border:1px solid #233e44; }
+#me .origin-text { display:grid;min-width:0; }
+#meTxt { overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px; }
+#sheet {
+  --tx:#183238;--mu:#485e5d;--panel2:#e8ece2;--line:#c2ccc1;
+  grid-area:panel; min-height:0; overflow-y:auto; overscroll-behavior:contain;
+  padding:clamp(20px,2.6vw,40px); padding-bottom:calc(var(--sb) + 20px);
+  background:#f6f4eb; color:var(--tx); border-left:1px solid #526b6c;
+}
+.route-label { display:flex;align-items:center;gap:8px;color:#95451f;margin-bottom:8px; }
+.route-label::before { content:"";width:18px;height:3px;background:currentColor; }
+.sh-t { font-size:clamp(21px,2.3vw,34px);line-height:1.12;letter-spacing:-.045em;font-weight:600;margin-bottom:9px; }
+.sh-s { color:var(--mu);font-size:14px;line-height:1.5;margin-bottom:16px; }
+.dests { display:grid;border-top:1px solid var(--line); }
+.dest { display:grid;grid-template-columns:12px 1fr auto;gap:12px;align-items:center;text-align:left;padding:16px 4px;border-bottom:1px solid var(--line); }
+.dest:hover,.dest:focus-visible { background:#e6ebdf; }
+.dest .socket { width:10px;height:10px;border:1px solid #233e4480; }
+.dest strong { display:block;font-size:17px;letter-spacing:-.025em; }
+.dest .m { font-size:12px;color:var(--mu); }
+.dest .arrow { font-size:22px;color:#9b491f; }
+.hop-readout {
+  position:absolute; left:12px; top:12px; max-width:calc(100% - 124px);
+  padding:7px 10px; background:#12343af0; border-left:3px solid #efa267;
+  color:#ffddb7; font:500 12px/1.45 'JetBrains Mono',monospace;
+  pointer-events:none; overflow-wrap:anywhere;
+}
+.hop-readout:empty { display:none; }
+.current-link { stroke:#ffd6a1; stroke-width:5; filter:drop-shadow(0 0 3px #eea364); }
+.btn,.btn.ghost,.tag,.hdr div,.stats div { border-radius:4px; }
+.btn.ghost { color:var(--tx); }
+#sheet .ctl { position:sticky;bottom:0;padding-top:6px;background:#f6f4eb; }
+#sheet .ctl .btn { padding-inline:6px; }
+.tag.delivered { background:#d7eadb;color:#205238; }
 .tag{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--panel2);color:var(--mu);margin-bottom:8px}
 .hdr{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0 12px}
 .hdr div{background:var(--panel2);border-radius:10px;padding:7px 10px;min-width:0}
@@ -101,21 +142,40 @@ h1 em{font-style:normal;color:var(--cu2)}
 @keyframes myr{from{transform:scale(.6);opacity:.9}to{transform:scale(2);opacity:0}}
 .bc{stroke-dasharray:6 7;animation:bcm .5s linear infinite}@keyframes bcm{to{stroke-dashoffset:-13}}
 .dev{cursor:pointer}
-.dev.sel .face{stroke:#fff;stroke-width:1.2}
+.dev.sel .face,.dev:hover .face{stroke:#f6d7b5;stroke-width:1.8}
 #toast{position:absolute;left:50%;top:calc(var(--st) + 64px);transform:translate(-50%,-10px);background:var(--cu);color:#1a0e05;font-weight:600;font-size:14px;padding:9px 16px;border-radius:999px;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){.drop,.wire,.fade,.bob,.myring,.blink{animation:none!important;stroke-dashoffset:0}}
-@media (min-width:760px){#sheet{left:auto;right:16px;bottom:16px;width:390px;border-radius:22px;border:1px solid var(--line)}}
+
 #intro { overflow-y: auto; gap: 16px; }
 #intro > div { flex-shrink: 0; }
 #intro .brand { flex-wrap: wrap; }
 .site-back { color: var(--tx); text-decoration: none; }
-#hud .site-back { font-size: 22px; }
 #map :focus-visible, #intro :focus-visible { outline: 2px solid var(--cu2); outline-offset: 2px; }
-@media (min-width:760px) {
-  #svg { width: calc(100% - 420px); }
-  #hud { right: 412px; }
-  #sheet { max-height: calc(100% - 32px); }
+#intro { background-color:#12343a;align-items:center;justify-content:safe center; }
+#intro > div { width:min(100%,540px); }
+#intro .brand img { width:62px;display:block; }
+#intro .brand a { background:#f6f4eb;padding:6px;border-radius:3px; }
+@media (max-width:759px) {
+  #map { grid-template:"mast" auto "stage" minmax(0,1fr) "panel" auto / 100%; }
+  .mast { gap:10px;padding-inline:10px; }
+  .mast img { width:48px; }
+  .map-title { padding-left:10px; }
+  #me { gap:6px;padding:4px 7px; }
+  #meTxt { max-width:24vw;font-size:11px; }
+  #sheet { max-height:48dvh;max-height:min(48dvh,440px);padding:14px 16px calc(12px + var(--sb));border-left:0;border-top:3px solid #ce8050; }
+  .dests { grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px; }
+  .dest { grid-template-columns:8px minmax(0,1fr);gap:6px;padding:8px 0; }
+  .dest strong { font-size:14px; }
+  .dest .m { font-size:10px; }
+  .dest .arrow { display:none; }
+  .route-label { margin-bottom:4px; }
+  .sh-s { margin-bottom:8px; }
+}
+@media (max-height:490px) and (orientation:landscape) {
+  #map { grid-template:"mast mast" auto "stage panel" minmax(0,1fr) / minmax(0,1fr) minmax(235px,38%); }
+  #sheet { max-height:none;border-top:0;padding:12px 16px; }
+  .dests { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -123,7 +183,7 @@ h1 em{font-style:normal;color:var(--cu2)}
 
 <section id="intro" class="scr">
   <div>
-    <div class="brand"><a class="site-back" href="index.html#home" aria-label="Voltar ao site da ANI">← ANI</a><i></i> NETWORK MAP</div>
+    <div class="brand"><a class="site-back" href="index.html#home" aria-label="Voltar ao site da ANI"><img src="assets/ani.webp" alt="ANI"></a><i></i> NETWORK MAP</div>
     <h1>Você acabou de entrar na rede da <em>Aura Capital.</em></h1>
     <p class="lead" id="lead">Seu celular vai virar um computador desta rede. Explore os equipamentos e acompanhe um pacote atravessando VLANs, roteadores e a WAN.</p>
     <div id="term" class="mono hide"></div>
@@ -140,14 +200,20 @@ h1 em{font-style:normal;color:var(--cu2)}
 </section>
 
 <section id="map" class="scr hide">
-  <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
-  <div id="hud">
-    <a class="ib site-back" href="index.html#home" aria-label="Voltar ao site da ANI" title="Voltar ao site da ANI">←</a>
-    <button id="me"><span class="dot" id="meDot"></span><span class="t mono" id="meTxt"></span></button>
+  <header class="mast">
+    <a class="site-back" href="index.html#home" aria-label="Voltar ao site da ANI"><img src="assets/ani.webp" alt="ANI"></a>
+    <div class="map-title"><small lang="en">Network Map</small><strong>Aura Capital</strong></div>
+    <button id="me" title="Ver meu dispositivo"><span class="dot" id="meDot"></span><span class="origin-text"><span class="origin-label">Meu dispositivo</span><span class="mono" id="meTxt"></span></span></button>
+  </header>
+  <div class="stage">
+    <svg id="svg" aria-label="Topologia interativa da matriz e da filial" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="hud">
     <button class="ib" id="bFind" aria-label="Centralizar em mim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
     <button class="ib" id="bFit" aria-label="Ver a rede inteira"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
   </div>
-  <div id="toast"></div>
+    <div class="hop-readout" id="hopReadout"></div>
+    <div id="toast" role="status"></div>
+  </div>
   <div id="sheet"></div>
 </section>
 
@@ -242,23 +308,28 @@ function box(g,x,y,z,w,d,h,col,cls){const c=cls||'face';
  el('polygon',{class:c,points:pts([[x,y+d,z],[x+w,y+d,z],[x+w,y+d,z+h],[x,y+d,z+h]]),fill:shade(col,.72)},g);
  el('polygon',{class:c,points:pts([[x+w,y,z],[x+w,y+d,z],[x+w,y+d,z+h],[x+w,y,z+h]]),fill:shade(col,.5)},g);
  el('polygon',{class:c,points:pts([[x,y,z+h],[x+w,y,z+h],[x+w,y+d,z+h],[x,y+d,z+h]]),fill:shade(col,1)},g);}
-const METAL='#4a505a';
+const METAL='#65848b';
 
+let sceneBounds;
 let world,gCables,gDev,gFx,gPk,built=false,wanPath;
 function wanGeom(){const a=P(byId.r1.x+.8,byId.r1.y+.5,.55),b=P(byId.r2.x+.8,byId.r2.y+.5,.55);const m=[(a[0]+b[0])/2+330,(a[1]+b[1])/2];return{a,b,m}}
 function bez(g,t){const u=1-t;return[u*u*g.a[0]+2*u*t*g.m[0]+t*t*g.b[0],u*u*g.a[1]+2*u*t*g.m[1]+t*t*g.b[1]]}
-function text(g,x,y,s,str,o){const t=el('text',Object.assign({x,y,'font-size':s,fill:'#9a968d','font-family':'Space Grotesk,sans-serif','text-anchor':'middle'},o||{}),g);t.textContent=str;return t}
+function text(g,x,y,s,str,o){const t=el('text',Object.assign({x,y,'font-size':s,fill:'#b6ccc7','font-family':'Space Grotesk,sans-serif','text-anchor':'middle'},o||{}),g);t.textContent=str;return t}
 
 function build(){
  svg.innerHTML='';world=el('g',{},svg);
  const gFloor=el('g',{class:'fade'},world);
  [[0,0,12.2,9.6,'MATRIZ','44 funcionários · link 200 Mb/s'],[13,11,6.2,8.4,'FILIAL','18 funcionários · link 100 Mb/s']].forEach(f=>{
-  const [x,y,w,d]=f;box(gFloor,x,y,-.4,w,d,.4,'#1d2128','floor');
-  for(let i=1;i<w;i++)el('line',{x1:P(x+i,y)[0],y1:P(x+i,y)[1],x2:P(x+i,y+d)[0],y2:P(x+i,y+d)[1],stroke:'#262b33','stroke-width':1},gFloor);
-  for(let j=1;j<d;j++)el('line',{x1:P(x,y+j)[0],y1:P(x,y+j)[1],x2:P(x+w,y+j)[0],y2:P(x+w,y+j)[1],stroke:'#262b33','stroke-width':1},gFloor);
+  const [x,y,w,d]=f;box(gFloor,x,y,-.55,w,d,.55,'#285058','floor');
+  for(let i=1;i<w;i++)el('line',{x1:P(x+i,y)[0],y1:P(x+i,y)[1],x2:P(x+i,y+d)[0],y2:P(x+i,y+d)[1],stroke:'#395e65','stroke-width':1},gFloor);
+  for(let j=1;j<d;j++)el('line',{x1:P(x,y+j)[0],y1:P(x,y+j)[1],x2:P(x+w,y+j)[0],y2:P(x+w,y+j)[1],stroke:'#395e65','stroke-width':1},gFloor);
   el('polyline',{points:pts([[x,y+d,0],[x+w,y+d,0],[x+w,y,0]]),fill:'none',stroke:COPPER,'stroke-width':1.5,opacity:.55},gFloor);
-  const lp=P(x+.3,y+d+.9);text(gFloor,lp[0],lp[1]+14,30,f[4],{'text-anchor':'end',fill:'#ece8e1','font-weight':600,'letter-spacing':'4'});
-  text(gFloor,lp[0],lp[1]+42,17,f[5],{'text-anchor':'end'});});
+  const lp=P(x+.3,y+d+.9);
+  const place=el('g',{transform:'translate('+lp[0]+' '+lp[1]+')'},gFloor);
+  el('rect',{x:-263,y:-18,width:256,height:75,rx:3,fill:'#13383e',stroke:'#638083'},place);
+  el('rect',{x:-263,y:-18,width:5,height:75,fill:f[4]==='MATRIZ'?'#e69a61':'#77c7bb'},place);
+  text(place,-244,15,29,f[4],{'text-anchor':'start',fill:'#fff3de','font-weight':600,'letter-spacing':'2'});
+  text(place,-244,41,15,f[5],{'text-anchor':'start'});});
  [[.4,.4,3.2,3.2,30,'Servidores'],[.3,4.1,6.3,5.2,10,'Operações'],[7.1,4.4,4.8,3.9,20,'Administrativo'],[13.4,15.8,5.4,3.3,40,'Atendimento']].forEach(z=>{
   const [x,y,w,d,v,n]=z;el('polygon',{points:pts([[x,y,0],[x+w,y,0],[x+w,y+d,0],[x,y+d,0]]),fill:VL[v].c,'fill-opacity':.1,stroke:VL[v].c,'stroke-opacity':.45,'stroke-dasharray':'6 5'},gFloor);
   const q=P(x+w,y+d);text(gFloor,q[0]+8,q[1]+6,16,'VLAN '+v+' · '+n,{'text-anchor':'start',fill:VL[v].c,'font-weight':500});});
@@ -274,17 +345,22 @@ function build(){
  text(gW,pk[0]+14,pk[1]-14,17,'WAN 10.6.0.216/30',{'text-anchor':'start',fill:'#8fc3f5','font-weight':500});
  text(gW,pk[0]+14,pk[1]+8,14,'VPN IPsec sobre a internet',{'text-anchor':'start'});
  gFx=el('g',{},world);gPk=el('g',{},world);
- youMarker();built=true}
+ youMarker();sceneBounds=world.getBBox();built=true}
 function drawDev(g,o){
  const{x,y,w,d,h}=o;
- if(o.kind==='router'||o.kind==='switch'){box(g,x,y,0,w,d,h,o.kind==='router'?'#3c434d':METAL);
+ if(o.kind==='router'||o.kind==='switch'){box(g,x,y,0,w,d,h,o.kind==='router'?'#537076':METAL);
+  const ports=o.kind==='switch'?10:4;
+  for(let i=0;i<ports;i++){
+   const px=x+.12+i*(w-.24)/ports, pw=(w-.24)/ports*.75;
+   el('polygon',{points:pts([[px,y+d,.08],[px+pw,y+d,.08],[px+pw,y+d,h*.45],[px,y+d,h*.45]]),fill:'#0d282e',stroke:'#9fb0a9','stroke-width':.6},g);
+  }
   const n=o.kind==='router'?4:10;for(let i=0;i<n;i++){const p=P(x+.2+i*(w-.4)/(n-1),y+d,h*.5);el('circle',{cx:p[0],cy:p[1],r:2.2,fill:i%3?'#5fd39a':'#f2a66a',class:'blink',style:'animation-delay:'+(Math.random()*1.4).toFixed(2)+'s'},g)}
   const t=P(x+w/2,y+d/2,h);text(g,t[0],t[1]+5,13,o.label,{fill:'#d9d4cb','font-weight':600,'pointer-events':'none'});}
- else if(o.kind==='server'){box(g,x,y,0,w,d,h,'#353b44');
+ else if(o.kind==='server'){box(g,x,y,0,w,d,h,'#587175');
   for(let k=1;k<7;k++){const a=P(x+.1,y+d,k*h/7),b=P(x+w-.1,y+d,k*h/7);el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#1a1d22','stroke-width':2},g);
    const l=P(x+w-.25,y+d,k*h/7+.12);el('circle',{cx:l[0],cy:l[1],r:2,fill:VL[30].c,class:'blink',style:'animation-delay:'+(k*.2)+'s'},g)}
   const t=P(x+w/2,y+d/2,h);text(g,t[0],t[1]+5,13,'SRV',{fill:'#d9d4cb','font-weight':600,'pointer-events':'none'});}
- else{box(g,x,y,0,w,d,.38,'#3a3530');
+ else{box(g,x,y,0,w,d,.38,'#657a77');
   box(g,x+.42,y+.35,.38,.16,.16,.12,'#2b2f35');
   const sx=x+.1,sy=y+.3,sz=.5,sw=.7,sd=.1,sh=.45;
   el('polygon',{class:'face',points:pts([[sx+sw,sy,sz],[sx+sw,sy+sd,sz],[sx+sw,sy+sd,sz+sh],[sx+sw,sy,sz+sh]]),fill:'#22262c'},g);
@@ -303,13 +379,13 @@ function youMarker(){if(meMark)meMark.remove();const c=P(me.x+.45,me.y+.45,0),t=
 /* ---------- câmera ---------- */
 const cam={x:0,y:0,s:2};let tw=null,following=false,touching=false;
 function vw(){return svg.clientWidth||innerWidth}function vh(){return svg.clientHeight||innerHeight}
-function sheetH(){return innerWidth>=760?0:$('#sheet').offsetHeight}
-function hudH(){return 70}
 function apply(){const W=vw(),H=vh();svg.setAttribute('viewBox',(cam.x-W*cam.s/2).toFixed(1)+' '+(cam.y-H*cam.s/2).toFixed(1)+' '+(W*cam.s).toFixed(1)+' '+(H*cam.s).toFixed(1))}
-function camFor(px,py,s){return{x:px,y:py+(sheetH()-hudH())/2*s,s}}
-function bounds(){const ps=[P(0,9.6),P(12.2,0),P(0,0,3),P(13,19.4),P(19.2,11),P(12.2,9.6)];const W=wanGeom();ps.push(bez(W,.5));
- const xs=ps.map(p=>p[0]),ys=ps.map(p=>p[1]);return{x0:Math.min(...xs)-150,x1:Math.max(...xs)+60,y0:Math.min(...ys)-40,y1:Math.max(...ys)+80}}
-function fitS(){const b=bounds();return Math.max((b.x1-b.x0)/vw(),(b.y1-b.y0)/(vh()-sheetH()-hudH()))}
+function camFor(px,py,s){return{x:px,y:py,s}}
+function bounds(){
+ const b=sceneBounds;
+ return {x0:b.x-18,x1:b.x+b.width+18,y0:b.y-15,y1:b.y+b.height+15};
+}
+function fitS(){const b=bounds();return Math.max((b.x1-b.x0)/Math.max(1,vw()),(b.y1-b.y0)/Math.max(1,vh()))}
 function fitAll(ms){const b=bounds(),s=fitS();fly(camFor((b.x0+b.x1)/2,(b.y0+b.y1)/2,s),ms)}
 function focusDev(o,k,ms){const c=P(o.x+o.w/2,o.y+o.d/2,.5);fly(camFor(c[0],c[1],fitS()*(k||.45)),ms)}
 function fly(t,ms){const f={...cam},t0=performance.now();ms=ms||900;tw=t0;
@@ -330,7 +406,7 @@ svg.addEventListener('pointerup',end);svg.addEventListener('pointercancel',end);
 function zoomAt(cx,cy,f){const r=svg.getBoundingClientRect();const lim=fitS();const ns=Math.max(lim*.15,Math.min(lim*1.6,cam.s*f));const k=ns/cam.s;
  const wx=cam.x+(cx-r.left-r.width/2)*cam.s,wy=cam.y+(cy-r.top-r.height/2)*cam.s;cam.x=wx-(wx-cam.x)*k;cam.y=wy-(wy-cam.y)*k;cam.s=ns}
 svg.addEventListener('wheel',e=>{e.preventDefault();tw=null;zoomAt(e.clientX,e.clientY,Math.exp(e.deltaY*.0015));apply()},{passive:false});
-addEventListener('resize',()=>apply());
+new ResizeObserver(()=>{if(!built)return;if(mode==='home'&&!running)fitAll(200);else apply()}).observe(svg);
 
 /* ---------- painel ---------- */
 let mode='home',selG=null;
@@ -339,11 +415,11 @@ function setSheet(h){sheet.innerHTML=h;sheet.scrollTop=0}
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2200)}
 function sel(o){if(selG)selG.classList.remove('sel');selG=o?o.g:null;if(selG)selG.classList.add('sel')}
 function destList(){const out=[{o:byId.srv,n:'Servidor',m:'10.6.0.130 · VLAN 30',c:VL[30].c}];
- [10,20,40].forEach(v=>{const p=PCS.find(q=>q.vlan===v&&q!==me);out.push({o:p,n:(v===me.vlan?'Colega de setor':'Colega '+({10:'da Operações',20:'do Adm.',40:'da filial'})[v]),m:p.ip+' · VLAN '+v,c:VL[v].c})});return out}
+ [10,20,40].forEach(v=>{const p=PCS.find(q=>q.vlan===v&&q!==me);out.push({o:p,n:VL[v].n,m:p.ip+' · VLAN '+v,c:VL[v].c})});return out}
 function home(){mode='home';sel(null);
  const ds=destList();
- setSheet('<div class="sh-t">Mande um pacote</div><div class="sh-s">Escolha o destino e acompanhe cada salto. Toque nos equipamentos para explorar; arraste e use dois dedos para zoom.</div><div class="dests">'+
-  ds.map((d,i)=>'<button class="dest" data-i="'+i+'"><span class="n"><i style="background:'+d.c+'"></i>'+d.n+'</span><span class="m mono">'+d.m+'</span></button>').join('')+'</div>');
+ setSheet('<div class="route-label">Envio de pacote</div><div class="sh-t">Escolha o destino.</div><div class="sh-s">Toque em um destino para seguir o pacote ou em um equipamento para ver seus dados.</div><div class="dests">'+
+  ds.map((d,i)=>'<button class="dest" data-i="'+i+'"><i class="socket" aria-hidden="true" style="background:'+d.c+'"></i><span><strong>'+d.n+'</strong><span class="m mono">'+d.m+'</span></span><span class="arrow" aria-hidden="true">↗</span></button>').join('')+'</div>');
  sheet.querySelectorAll('.dest').forEach(b=>b.addEventListener('click',()=>trace(ds[+b.dataset.i].o)))}
 function showDev(o){mode='dev';sel(o);focusDev(o,.32,700);let rows=[],extra='';
  if(o.kind==='router'){rows=Object.entries(o.ifs).map(([k,v])=>[k==='wan'?'WAN':'Gateway VLAN '+k,v]);rows.push(['Modelo',o.model],['Simulação',o.sim],['Preço cotado',o.price]);
@@ -423,6 +499,14 @@ function traceUI(step,total,tag,title,txt,h){mode='trace';
  $('#bX').addEventListener('click',()=>{abort=true})}
 
 let running=false;
+let activeLink=null;
+function markHop(hop){
+ if(activeLink)activeLink.classList.remove('current-link');
+ activeLink=hop?.link.el;
+ if(activeLink)activeLink.classList.add('current-link');
+ const label=device=>device.label || device.host || device.name;
+ $('#hopReadout').textContent=hop ? label(hop.from)+' → '+label(hop.to) : '';
+}
 async function trace(dst){if(running)return;running=true;abort=false;paused=false;prevH=null;sel(null);
  const segs=segments(me,dst);const total=segs.reduce((a,s)=>a+s.hops.length,0)+1;
  const dName=dst===byId.srv?'Servidor':dst.kind==='router'?dst.name:(dst.host||dst.name);
@@ -431,6 +515,7 @@ async function trace(dst){if(running)return;running=true;abort=false;paused=fals
  const st=P(me.x+.45,me.y+.45,.15);pkAt(st);fly(camFor(st[0],st[1],fitS()*.42),700);await sleep(700);
  try{
  for(let si=0;si<segs.length;si++){const seg=segs[si];
+  markHop(null);
   if(seg.from.kind==='router'){ttl--;routers++}
   if(seg.v!=='wan')vlans.add(seg.v);
   const key=seg.from.id+'>'+seg.to.id;const tIP=ipOf(seg.to,seg.v==='wan'?'wan':seg.v),sIP=ipOf(seg.from,seg.v==='wan'?'wan':seg.v);
@@ -454,6 +539,7 @@ async function trace(dst){if(running)return;running=true;abort=false;paused=fals
    else if(n.kind==='router'){tagL='Camada 3 · '+n.label;title=n.name;
     if(hop.link.type==='wan')txt='Rota estática: '+(dst.vlan?VL[dst.vlan].net:'a outra unidade')+' via '+ipOf(seg.to,'wan')+'. Reescreve os MACs e o TTL cai para '+ttl+'. Na implantação real, isso vai num túnel VPN IPsec.';
     else txt=(seg.v?VL[seg.v].net:'')+' está diretamente conectada (subinterface '+n.ifs[seg.v]+'). Reescreve os MACs, o TTL cai para '+ttl+(prevLink&&prevLink===hop.link?'. Router-on-a-stick: o quadro volta pelo mesmo trunk, agora com a tag VLAN '+seg.v+'.':'.')}
+   markHop(hop);
    traceUI(step,total,tagL,title,txt,h);
    await wait(n===me?1500:1700);await move(hop)}}
  buzz([30,60,30,60,80]);
@@ -461,9 +547,9 @@ async function trace(dst){if(running)return;running=true;abort=false;paused=fals
  const devs=new Set();segs.forEach(s=>s.hops.forEach(h=>devs.add(h.to)));
  done(dst,dName,{saltos:devs.size,routers,ttl,arps,vlans:vlans.size})}
  catch(e){gPk.innerHTML='';home()}
- following=false;running=false}
+ markHop(null);following=false;running=false}
 function done(dst,dName,s){mode='done';
- setSheet('<span class="tag" style="background:rgba(95,211,154,.15);color:#5fd39a">Entregue</span><div class="sh-t">Chegou em '+dName+'</div>'+
+ setSheet('<span class="tag delivered">Entregue</span><div class="sh-t">Chegou em '+dName+'</div>'+
  '<div class="stats"><div><b>'+s.saltos+'</b><span>equipamentos no caminho</span></div><div><b>'+s.routers+'</b><span>roteadores</span></div><div><b class="mono">64→'+s.ttl+'</b><span>TTL</span></div><div><b>'+s.arps+'</b><span>consultas ARP</span></div></div>'+
  (s.arps?'<div class="note">Na primeira vez, cada salto precisou de ARP. É por isso que, no Packet Tracer, o primeiro ping da filial ao servidor expirou (3/4). Mande de novo: agora vai direto.</div>':'<div class="note">ARP já estava em cache: o pacote foi direto, sem perguntar nada a ninguém.</div>')+
  '<div class="ctl col"><button class="btn" id="bAg">Mandar de novo</button><button class="btn ghost" id="bOt">Outro destino</button></div>');
