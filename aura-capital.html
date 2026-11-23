@@ -1,0 +1,1209 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fafaf7">
+  <meta name="description"
+    content="Infraestrutura de redes corporativas da ANI e estudo de caso da fintech Aura Capital.">
+  <title>Aura Capital — Projeto de redes da ANI</title>
+  <link rel="icon" href="assets/logo_ani.svg">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <header class="main-header">
+    <div class="wrap head-row">
+      <a class="brand" href="index.html#home" aria-label="ANI, página inicial"><img src="assets/ani.webp" width="104"
+          height="34" alt="ANI"><span>Advanced Network<br>Infrastructure</span></a><button class="menu-toggle" hidden
+        type="button" aria-expanded="false" aria-controls="nav"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg> Menu</button>
+      <nav id="nav" aria-label="Navegação principal">
+        <a href="index.html#home" lang="en">Home</a><a href="index.html#services" lang="en">Services</a><a
+          href="index.html#co-workers" aria-current="location" lang="en">Co-workers</a><a href="index.html#team"
+          lang="en">Team</a><a href="index.html#about-us" lang="en">About us</a><a href="contatos.html">Contatos</a>
+      </nav>
+      <a class="head-cta" href="#materiais"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 4h7l2 2 2-2h7v15h-7l-2 2-2-2H3zM12 6v15" />
+        </svg>Documentação</a>
+    </div>
+  </header>
+  <main id="conteudo">
+    <section class="case-hero" id="caso">
+      <div class="wrap">
+        <div class="eyebrow">
+          <i></i>Co-workers / Estudo de caso
+        </div>
+        <h1>
+          Aura <em>Capital.</em>
+        </h1>
+        <p>
+          Como interligar duas unidades de uma fintech para que a equipe de atendimento acesse os sistemas da matriz?
+        </p>
+        <div class="chips">
+          <span class="chip">Serviços financeiros</span><span class="chip">Matriz + filial</span><span
+            class="chip">Enterprise Connect</span>
+        </div>
+      </div>
+    </section>
+    <div class="wrap case-layout">
+      <aside>
+        <nav aria-label="Índice do projeto">
+          <p>
+            Neste projeto
+          </p>
+          <a href="#contexto">O cliente</a><a href="#etapa-1">01 · Planejamento</a><a href="#etapa-2">02 ·
+            Homologação</a><a href="#etapa-3">03 · Orçamento</a><a href="#materiais">Documentação</a>
+        </nav>
+      </aside>
+      <div class="case-content">
+        <section class="case-stage" id="contexto">
+          <div class="eyebrow">
+            <i></i>Contexto
+          </div>
+          <h2>
+            O cliente<span>.</span>
+          </h2>
+          <p class="intro">
+            A Aura Capital é a fintech do projeto Enterprise Connect. Sua missão é simplificar pagamentos e a gestão
+            financeira de pessoas e pequenos negócios por meio de soluções digitais.
+          </p>
+          <p>
+            A matriz concentra Operações, Administrativo e Servidores. A filial atende clientes. A ANI recebeu o desafio
+            de separar o tráfego dos setores, preservar o acesso aos serviços internos e prever capacidade para
+            crescimento.
+          </p>
+        </section>
+        <section class="case-stage" id="etapa-1">
+          <div class="eyebrow">
+            <i></i>Etapa 1 / Projeto lógico
+          </div>
+          <h2>
+            Planejamento da rede<span>.</span>
+          </h2>
+          <p class="intro">
+            Na matriz, 30 pessoas trabalham em Operações e 14 no Administrativo. A filial reúne 18 profissionais de
+            Atendimento que precisam consultar a aplicação hospedada na matriz.
+          </p>
+          <div class="metrics">
+            <div>
+              <b>10.6.0.0/24</b><span>Rede-base privada</span>
+            </div>
+            <div>
+              <b>220 de 256</b><span>Endereços alocados em blocos</span>
+            </div>
+            <div>
+              <b>36</b><span>Endereços em reserva</span>
+            </div>
+          </div>
+          <h3>
+            Como os setores foram separados
+          </h3>
+          <p>
+            O plano reserva uma VLAN para cada função. No Administrativo, por exemplo, 14 PCs, três impressoras e um
+            gateway ocupam 18 endereços. Em Operações, os 30 PCs e o gateway exigem um bloco /26, com 62 endereços
+            úteis.
+          </p>
+          <details class="fold">
+            <summary>
+              Abrir plano VLSM completo
+            </summary>
+            <div class="fold-content">
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de vlan / enlace">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        VLAN / enlace
+                      </th>
+                      <th scope="col">
+                        Sub-rede
+                      </th>
+                      <th scope="col">
+                        Máscara
+                      </th>
+                      <th scope="col">
+                        Gateway
+                      </th>
+                      <th scope="col">
+                        Faixa de dispositivos
+                      </th>
+                      <th scope="col">
+                        Broadcast
+                      </th>
+                      <th scope="col">
+                        Uso / úteis
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">
+                        10 · Operações
+                      </th>
+                      <td>
+                        10.6.0.0/26
+                      </td>
+                      <td>
+                        255.255.255.192
+                      </td>
+                      <td>
+                        10.6.0.1
+                      </td>
+                      <td>
+                        10.6.0.2 – 10.6.0.62
+                      </td>
+                      <td>
+                        10.6.0.63
+                      </td>
+                      <td>
+                        31/62
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        20 · Administrativo
+                      </th>
+                      <td>
+                        10.6.0.64/27
+                      </td>
+                      <td>
+                        255.255.255.224
+                      </td>
+                      <td>
+                        10.6.0.65
+                      </td>
+                      <td>
+                        10.6.0.66 – 10.6.0.94
+                      </td>
+                      <td>
+                        10.6.0.95
+                      </td>
+                      <td>
+                        18/30
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        40 · Atendimento
+                      </th>
+                      <td>
+                        10.6.0.96/27
+                      </td>
+                      <td>
+                        255.255.255.224
+                      </td>
+                      <td>
+                        10.6.0.97
+                      </td>
+                      <td>
+                        10.6.0.98 – 10.6.0.126
+                      </td>
+                      <td>
+                        10.6.0.127
+                      </td>
+                      <td>
+                        21/30
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        30 · Servidores
+                      </th>
+                      <td>
+                        10.6.0.128/28
+                      </td>
+                      <td>
+                        255.255.255.240
+                      </td>
+                      <td>
+                        10.6.0.129
+                      </td>
+                      <td>
+                        10.6.0.130 – 10.6.0.142
+                      </td>
+                      <td>
+                        10.6.0.143
+                      </td>
+                      <td>
+                        7/14
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        50 · Wi-Fi corporativo
+                      </th>
+                      <td>
+                        10.6.0.144/28
+                      </td>
+                      <td>
+                        255.255.255.240
+                      </td>
+                      <td>
+                        10.6.0.145
+                      </td>
+                      <td>
+                        10.6.0.146 – 10.6.0.158
+                      </td>
+                      <td>
+                        10.6.0.159
+                      </td>
+                      <td>
+                        11/14
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        60 · Visitantes matriz
+                      </th>
+                      <td>
+                        10.6.0.160/28
+                      </td>
+                      <td>
+                        255.255.255.240
+                      </td>
+                      <td>
+                        10.6.0.161
+                      </td>
+                      <td>
+                        10.6.0.162 – 10.6.0.174
+                      </td>
+                      <td>
+                        10.6.0.175
+                      </td>
+                      <td>
+                        11/14
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        70 · Visitantes filial
+                      </th>
+                      <td>
+                        10.6.0.176/28
+                      </td>
+                      <td>
+                        255.255.255.240
+                      </td>
+                      <td>
+                        10.6.0.177
+                      </td>
+                      <td>
+                        10.6.0.178 – 10.6.0.190
+                      </td>
+                      <td>
+                        10.6.0.191
+                      </td>
+                      <td>
+                        11/14
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        90 · Gerência matriz
+                      </th>
+                      <td>
+                        10.6.0.192/28
+                      </td>
+                      <td>
+                        255.255.255.240
+                      </td>
+                      <td>
+                        10.6.0.193
+                      </td>
+                      <td>
+                        10.6.0.194 – 10.6.0.206
+                      </td>
+                      <td>
+                        10.6.0.207
+                      </td>
+                      <td>
+                        6/14
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        91 · Gerência filial
+                      </th>
+                      <td>
+                        10.6.0.208/29
+                      </td>
+                      <td>
+                        255.255.255.248
+                      </td>
+                      <td>
+                        10.6.0.209
+                      </td>
+                      <td>
+                        10.6.0.210 – 10.6.0.214
+                      </td>
+                      <td>
+                        10.6.0.215
+                      </td>
+                      <td>
+                        3/6
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        WAN
+                      </th>
+                      <td>
+                        10.6.0.216/30
+                      </td>
+                      <td>
+                        255.255.255.252
+                      </td>
+                      <td>
+                        —
+                      </td>
+                      <td>
+                        10.6.0.217 – 10.6.0.218
+                      </td>
+                      <td>
+                        10.6.0.219
+                      </td>
+                      <td>
+                        2/2
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                A reserva vai de 10.6.0.220 a 10.6.0.255. Na WAN, os dois endereços úteis pertencem aos roteadores. Para
+                servidores, o plano reserva 10.6.0.130 a 10.6.0.135.
+              </p>
+            </div>
+          </details>
+          <details class="fold">
+            <summary>
+              Serviços, capacidade e controle de acesso
+            </summary>
+            <div class="fold-content">
+              <h3>
+                Serviços centralizados
+              </h3>
+              <p>
+                Seis papéis virtuais atendem DNS/DHCP, aplicação, banco, arquivos, monitoramento e backup. A filial
+                utiliza o CRM da matriz. Apenas a aplicação deve acessar diretamente o banco.
+              </p>
+              <h3>
+                Unidades e Wi-Fi
+              </h3>
+              <p>
+                O plano prevê dois switches e dois pontos de acesso na matriz, um switch e um ponto de acesso na filial.
+                As metas de internet são 200 e 100 Mb/s, respectivamente, e cerca de 50 Mb/s úteis entre as unidades.
+              </p>
+              <h3>
+                Políticas previstas
+              </h3>
+              <p>
+                Os visitantes usam apenas internet e os serviços de DHCP/DNS necessários. As ACLs no roteador ou
+                firewall restringem os fluxos entre redes. O PC de TI 10.6.0.198 concentra a gerência dos equipamentos.
+                Cada unidade mantém suas próprias VLANs, com conexão entre elas em camada 3.
+              </p>
+            </div>
+          </details>
+          <a class="doc-link" href="materiais/Etapa1_PlanoDeNegocios_Grupo6.pdf"><svg class="ico" aria-hidden="true"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M5 2h9l5 5v15H5zM14 2v6h5M8 13h8m-8 4h6" />
+            </svg><span>Abrir plano de negócios · PDF</span></a>
+        </section>
+        <section class="case-stage" id="etapa-2">
+          <div class="eyebrow">
+            <i></i>Etapa 2 / Laboratório
+          </div>
+          <h2>
+            Homologação técnica<span>.</span>
+          </h2>
+          <p class="intro">
+            No Cisco Packet Tracer 9.0.1, dois roteadores Cisco 2911 e três switches 2960-24TT conectaram três PCs e um
+            servidor representativos das quatro VLANs testadas.
+          </p>
+          <figure class="topology">
+            <a href="materiais/topologia.png" aria-label="Abrir a topologia em tamanho original"><img
+                src="materiais/topologia.png" width="1072" height="502"
+                alt="Dois roteadores unidos pela WAN. Na matriz, dois switches conectam Operações, Administrativo e Servidores. Na filial, o terceiro switch conecta Atendimento."></a>
+            <figcaption>
+              Topologia do laboratório · Abrir imagem em tamanho original
+            </figcaption>
+          </figure>
+          <h3>
+            O caminho dos pacotes
+          </h3>
+          <p>
+            O trunk 802.1Q entre os switches da matriz transporta a VLAN 20. As subinterfaces G0/0 dos roteadores
+            atendem os gateways locais. O enlace 10.6.0.216/30 utiliza 10.6.0.217 na matriz e 10.6.0.218 na filial, com
+            rotas estáticas entre as unidades.
+          </p>
+          <details class="fold">
+            <summary>
+              Consultar portas, IPs e gateways do laboratório
+            </summary>
+            <div class="fold-content">
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de setor">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        Setor
+                      </th>
+                      <th scope="col">
+                        Porta de acesso
+                      </th>
+                      <th scope="col">
+                        IP do dispositivo
+                      </th>
+                      <th scope="col">
+                        Gateway
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">
+                        Operações
+                      </th>
+                      <td>
+                        SW-M1 Fa0/1
+                      </td>
+                      <td>
+                        10.6.0.2
+                      </td>
+                      <td>
+                        10.6.0.1
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Administrativo
+                      </th>
+                      <td>
+                        SW-M2 Fa0/1
+                      </td>
+                      <td>
+                        10.6.0.66
+                      </td>
+                      <td>
+                        10.6.0.65
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Servidores
+                      </th>
+                      <td>
+                        SW-M1 Fa0/2
+                      </td>
+                      <td>
+                        10.6.0.130
+                      </td>
+                      <td>
+                        10.6.0.129
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Atendimento
+                      </th>
+                      <td>
+                        SW-F1 Fa0/1
+                      </td>
+                      <td>
+                        10.6.0.98
+                      </td>
+                      <td>
+                        10.6.0.97
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+          <h3>
+            Resultados dos testes
+          </h3>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de origem">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Origem
+                  </th>
+                  <th scope="col">
+                    Destino
+                  </th>
+                  <th scope="col">
+                    Verificação
+                  </th>
+                  <th scope="col">
+                    Respostas
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    Administrativo
+                  </th>
+                  <td>
+                    10.6.0.65
+                  </td>
+                  <td>
+                    Gateway local
+                  </td>
+                  <td>
+                    4 de 4
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Operações
+                  </th>
+                  <td>
+                    10.6.0.66
+                  </td>
+                  <td>
+                    Comunicação entre VLANs 10 e 20
+                  </td>
+                  <td>
+                    4 de 4
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Atendimento
+                  </th>
+                  <td>
+                    10.6.0.97
+                  </td>
+                  <td>
+                    Gateway da filial
+                  </td>
+                  <td>
+                    4 de 4
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Atendimento
+                  </th>
+                  <td>
+                    10.6.0.130
+                  </td>
+                  <td>
+                    Servidor da matriz pela WAN
+                  </td>
+                  <td>
+                    3 de 4
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            No último teste, a primeira solicitação expirou e as três seguintes receberam resposta. A homologação
+            demonstrou conectividade IPv4. Wi-Fi, VPN, ACLs completas e redundância ficaram para a implantação.
+          </p>
+          <details class="fold">
+            <summary>
+              Ver capturas dos testes
+            </summary>
+            <div class="fold-content">
+              <div class="evidence">
+                <figure>
+                  <a href="assets/gateway-administrativo.png"><img src="assets/gateway-administrativo.png"
+                      loading="lazy" alt="Administrativo até o gateway"></a>
+                  <figcaption>
+                    Administrativo até o gateway
+                  </figcaption>
+                </figure>
+                <figure>
+                  <a href="assets/entre-vlans.png"><img src="assets/entre-vlans.png" loading="lazy"
+                      alt="Operações até o Administrativo"></a>
+                  <figcaption>
+                    Operações até o Administrativo
+                  </figcaption>
+                </figure>
+                <figure>
+                  <a href="assets/filial-matriz.png"><img src="assets/filial-matriz.png" loading="lazy"
+                      alt="Atendimento até o gateway e o servidor"></a>
+                  <figcaption>
+                    Atendimento até o gateway e o servidor
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+          </details>
+          <a class="doc-link" href="materiais/Etapa2_Evidencias_Grupo6.pdf"><svg class="ico" aria-hidden="true"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M5 2h9l5 5v15H5zM14 2v6h5M8 13h8m-8 4h6" />
+            </svg><span>Abrir relatório de evidências · PDF</span></a>
+        </section>
+        <section class="case-stage" id="etapa-3">
+          <div class="eyebrow">
+            <i></i>Etapa 3 / Viabilidade
+          </div>
+          <h2>
+            Da simulação ao orçamento<span>.</span>
+          </h2>
+          <p class="intro">
+            A proposta de implantação traduz a topologia Cisco em equipamentos comerciais, cabeamento e proteção
+            elétrica para 72 pontos de rede. As cotações do grupo têm como referência 18 de novembro de 2026.
+          </p>
+          <div class="metrics budget">
+            <div>
+              <b>R$ 39.174,52</b><span>Equipamentos e materiais · CAPEX</span>
+            </div>
+            <div>
+              <b>R$ 1.900,00</b><span>Links de internet por mês · OPEX</span>
+            </div>
+            <div>
+              <b>R$ 61.974,52</b><span>CAPEX e 12 meses de internet</span>
+            </div>
+          </div>
+          <h3>
+            Equipamentos propostos
+          </h3>
+          <p>
+            Dois roteadores ER7206 fazem a borda das unidades. Três switches TL-SG3452 de 48 portas atendem os pontos
+            cabeados. Três EAP610 com injetores PoE+ levam o Wi-Fi às duas unidades. O orçamento prevê um link dedicado
+            por local e VPN IPsec entre os roteadores.
+          </p>
+          <details class="fold">
+            <summary>
+              Ver os 15 itens do investimento inicial
+            </summary>
+            <div class="fold-content">
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de material">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        Material
+                      </th>
+                      <th scope="col">
+                        Modelo cotado
+                      </th>
+                      <th scope="col">
+                        Matriz
+                      </th>
+                      <th scope="col">
+                        Filial
+                      </th>
+                      <th scope="col">
+                        Unitário
+                      </th>
+                      <th scope="col">
+                        Total
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">
+                        Roteador corporativo
+                      </th>
+                      <td>
+                        TP-Link ER7206
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        R$ 1.169,99
+                      </td>
+                      <td>
+                        R$ 2.339,98
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Switch gerenciável
+                      </th>
+                      <td>
+                        TP-Link TL-SG3452 · 48 portas
+                      </td>
+                      <td>
+                        2
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        R$ 2.590,90
+                      </td>
+                      <td>
+                        R$ 7.772,70
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Access point Wi-Fi 6
+                      </th>
+                      <td>
+                        TP-Link EAP610 AX1800
+                      </td>
+                      <td>
+                        2
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        R$ 749,99
+                      </td>
+                      <td>
+                        R$ 2.249,97
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Injetor PoE+
+                      </th>
+                      <td>
+                        TP-Link TL-POE160S
+                      </td>
+                      <td>
+                        2
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        R$ 146,30
+                      </td>
+                      <td>
+                        R$ 438,90
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Rack de parede 19&quot;
+                      </th>
+                      <td>
+                        ProtectM 12U × 570 mm
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        R$ 499,61
+                      </td>
+                      <td>
+                        R$ 999,22
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Patch panel Cat6
+                      </th>
+                      <td>
+                        Furukawa SohoPlus 35050439 · 24p
+                      </td>
+                      <td>
+                        3
+                      </td>
+                      <td>
+                        2
+                      </td>
+                      <td>
+                        R$ 845,62
+                      </td>
+                      <td>
+                        R$ 4.228,10
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Organizador de cabos
+                      </th>
+                      <td>
+                        Intelbras OCH1U · 40 mm
+                      </td>
+                      <td>
+                        3
+                      </td>
+                      <td>
+                        2
+                      </td>
+                      <td>
+                        R$ 96,01
+                      </td>
+                      <td>
+                        R$ 480,05
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Cabo Cat6 · caixa 305 m
+                      </th>
+                      <td>
+                        Furukawa 62154 · azul
+                      </td>
+                      <td>
+                        4
+                      </td>
+                      <td>
+                        2
+                      </td>
+                      <td>
+                        R$ 1.099,00
+                      </td>
+                      <td>
+                        R$ 6.594,00
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Conector RJ45 macho
+                      </th>
+                      <td>
+                        Furukawa 35050282 · pacote 50
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        0
+                      </td>
+                      <td>
+                        R$ 288,00
+                      </td>
+                      <td>
+                        R$ 288,00
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Keystone RJ45 fêmea
+                      </th>
+                      <td>
+                        Furukawa SohoPlus Cat6 branco
+                      </td>
+                      <td>
+                        51
+                      </td>
+                      <td>
+                        21
+                      </td>
+                      <td>
+                        R$ 39,90
+                      </td>
+                      <td>
+                        R$ 2.872,80
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Patch cord Cat6 · 1,5 m
+                      </th>
+                      <td>
+                        Furukawa SohoPlus 35123000
+                      </td>
+                      <td>
+                        107
+                      </td>
+                      <td>
+                        45
+                      </td>
+                      <td>
+                        R$ 24,90
+                      </td>
+                      <td>
+                        R$ 3.784,80
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Nobreak senoidal
+                      </th>
+                      <td>
+                        SMS Premium 29501 · 1500 VA
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        R$ 2.117,79
+                      </td>
+                      <td>
+                        R$ 4.235,58
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Régua para rack
+                      </th>
+                      <td>
+                        Gforce 358 · 8 tomadas 10 A
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        R$ 87,98
+                      </td>
+                      <td>
+                        R$ 175,96
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Bandeja para rack 19&quot;
+                      </th>
+                      <td>
+                        Nilko NK030160-C250 · 1U × 250 mm
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        R$ 61,23
+                      </td>
+                      <td>
+                        R$ 122,46
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Caixa para tomada de rede
+                      </th>
+                      <td>
+                        Furukawa 35050258 · 2 posições
+                      </td>
+                      <td>
+                        51
+                      </td>
+                      <td>
+                        21
+                      </td>
+                      <td>
+                        R$ 36,00
+                      </td>
+                      <td>
+                        R$ 2.592,00
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+          <details class="fold">
+            <summary>
+              Dimensionamento físico e energia
+            </summary>
+            <div class="fold-content">
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de critério">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        Critério
+                      </th>
+                      <th scope="col">
+                        Matriz
+                      </th>
+                      <th scope="col">
+                        Filial
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">
+                        Pontos de rede
+                      </th>
+                      <td>
+                        51
+                      </td>
+                      <td>
+                        21
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Cabo Cat6 estimado com reserva
+                      </th>
+                      <td>
+                        1.173 m
+                      </td>
+                      <td>
+                        483 m
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Caixas de 305 m
+                      </th>
+                      <td>
+                        4
+                      </td>
+                      <td>
+                        2
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Patch panels de 24 portas
+                      </th>
+                      <td>
+                        3
+                      </td>
+                      <td>
+                        2
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Portas livres nos switches
+                      </th>
+                      <td>
+                        42
+                      </td>
+                      <td>
+                        26
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Ocupação do rack de 12U
+                      </th>
+                      <td>
+                        10U
+                      </td>
+                      <td>
+                        7U
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Carga de rede estimada
+                      </th>
+                      <td>
+                        135 W
+                      </td>
+                      <td>
+                        80 W
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Potência com margem de 25%
+                      </th>
+                      <td>
+                        168,75 W
+                      </td>
+                      <td>
+                        100 W
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                O cálculo usa 20 m por ponto, com 15% de reserva. A compra soma 1.830 m de cabo e 152 patch cords. Cada
+                nobreak de 1.500 VA / 1.050 W protege os equipamentos de rede. A autonomia depende da curva do
+                fabricante e da carga real.
+              </p>
+            </div>
+          </details>
+          <h3>
+            Custo recorrente e parecer
+          </h3>
+          <p>
+            Os links dedicados da Vivo foram estimados em R$ 1.000/mês para a matriz (200 Mb/s) e R$ 900/mês para a
+            filial (100 Mb/s), totalizando R$ 22.800 em 12 meses. A ANI considera a arquitetura tecnicamente viável. A
+            decisão de implantação depende do levantamento físico e do fechamento comercial.
+          </p>
+          <details class="fold">
+            <summary>
+              Condições para implantação e aceite
+            </summary>
+            <div class="fold-content">
+              <p>
+                Confirmar estoque, suporte e revisão do switch cotado, sinalizado no dossiê como em fim de
+                comercialização. Verificar cobertura Wi-Fi, trajetos, autonomia dos nobreaks e disponibilidade dos links
+                por endereço. A proposta inclui um roteador e um link por unidade. A redundância exige orçamento
+                adicional.
+              </p>
+              <p>
+                O CAPEX contempla equipamentos e materiais de rede. Frete, mão de obra, certificação, canaletas,
+                elétrica, aterramento, PCs, impressoras, servidor físico, licenças e baterias futuras ficam fora desse
+                valor. O OPEX cobre os links de internet. O projeto registra benefícios qualitativos, sem estimativa de
+                ROI ou payback.
+              </p>
+            </div>
+          </details>
+        </section>
+        <section class="case-stage" id="materiais">
+          <div class="eyebrow">
+            <i></i>Acervo do projeto
+          </div>
+          <h2>
+            Documentação<span>.</span>
+          </h2>
+          <div class="documents">
+            <a class="doc-link" href="materiais/Etapa1_PlanoDeNegocios_Grupo6.pdf"><svg class="ico" aria-hidden="true"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M5 2h9l5 5v15H5zM14 2v6h5M8 13h8m-8 4h6" />
+              </svg><span>Etapa 1 · Plano de negócios (PDF)</span></a><a class="doc-link"
+              href="materiais/Etapa2_Evidencias_Grupo6.pdf"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 2h9l5 5v15H5zM14 2v6h5M8 13h8m-8 4h6" />
+              </svg><span>Etapa 2 · Evidências técnicas (PDF)</span></a><a class="doc-link"
+              href="materiais/topologia.png"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 2h9l5 5v15H5zM14 2v6h5M8 13h8m-8 4h6" />
+              </svg><span>Etapa 2 · Topologia do laboratório (PNG)</span></a><a class="doc-link"
+              href="materiais/Dossie_Final_Consolidado_Grupo6.pdf"><svg class="ico" aria-hidden="true"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M5 2h9l5 5v15H5zM14 2v6h5M8 13h8m-8 4h6" />
+              </svg><span>Etapa 3 · Dossiê executivo (PDF)</span></a><a class="doc-link"
+              href="materiais/Planilha_Orcamentaria_Grupo6.xlsx"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 2h9l5 5v15H5zM14 2v6h5M8 13h8m-8 4h6" />
+              </svg><span>Etapa 3 · Planilha orçamentária (XLSX)</span></a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap footer-row">
+      <a class="brand" href="index.html#home"><img src="assets/ani.webp" alt="ANI" width="84"
+          height="28"></a><span>Enterprise Connect · Universidade Cruzeiro do Sul</span><a href="#caso">Voltar ao
+        início</a>
+    </div>
+  </footer>
+</body>
+
+</html>
